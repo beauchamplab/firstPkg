@@ -34,70 +34,10 @@ define_initialization({
 
 #  ---------------------------------  Inputs -----------------------------------
 #' Define inputs
-#'
-#' Use function `define_input` to define inputs.
-#' Make sure rave toolbox (dev_[your_package_name]) is loaded
-#'
-#' @Usage: define_input(definition, init_args, init_expr)
-#'
-#' @param definition defines input types, for example:
-#'     textInput(inputId = 'text_electrode', label = 'Electrode')
-#'   defines a character variable `text_electrode` as one of the inputs
-#'
-#' Here are some possible types
-#'   1. textInput is an input for characters
-#'   2. numericInput is for numbers
-#'   3. sliderInput is for number or number ranges
-#'   4. selectInput is to provide choices
-#'   5. checkboxInput is for Yes/No options
-#'   6. compoundInput is for multiple group inputs
-#'   7. customizedUI is for advanced UI controls
-#'
-#'   Most of basic UI widgets can be found at:
-#'       https://shiny.rstudio.com/gallery/widget-gallery.html
-#'
-#'   The easiest way to look for usage is using `help` function:
-#'   help('textInput'), or ??textInput
-#'
-#'
-#' @param init_args,init_expr define the action when a subject is loaded
-#'
-#' Use the definition
-#'
-#'     textInput(inputId = 'text_electrode', label = 'Electrode')
-#'
-#' as an example. You might want label to update according to electrodes loaded.
-#' In this case, you can assign
-#'     init_args = 'label'
-#' indicating the label of this input will update according to actual data.
-#'
-#' You may also change multiple arguments. The following code is an extended example
-#'
-define_input(
-  definition = textInput(inputId = 'text_electrode', label = 'Electrode'),
 
-  # Use help('textInput') to see the definition, or help('updateTextInput')
-  # to see which input element(s) can be changed. In this case, they are:
-  #   label, value, placeholder
-
-  # We will change label and value
-  # label will tell users which electrodes are loaded
-  # value will be the first electrode
-
-  init_args = c('label', 'value'),
-  init_expr = {
-
-    # check ?rave_prepare for what kind of data are loaded
-    loaded_electrodes = preload_info$electrodes
-
-    # Generate text for loaded electrodes
-    text = deparse_selections(loaded_electrodes)
-
-    # Update
-    label = paste0('Electrode (', text, ')')
-    value = loaded_electrodes[1]
-  }
-)
+define_input_single_electrode(inputId = 'electrode')
+define_input_frequency(inputId = 'frequency', is_range = FALSE, initial_value = 0)
+define_input_time(inputId = 'time_range', is_range = TRUE, initial_value = c(0,1))
 
 # End of input
 # ----------------------------------  Outputs ----------------------------------
@@ -138,6 +78,13 @@ define_output(
   title = 'This Output Shows all the Printed Results',
   width = 12,
   order = 1
+)
+
+define_output(
+  definition = tableOutput('table_result'),
+  title = 'Subject Summary',
+  width = 12,
+  order = 2
 )
 
 # <<<<<<<<<<<< End ----------------- [DO NOT EDIT THIS LINE] -------------------

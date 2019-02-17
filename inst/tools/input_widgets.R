@@ -52,9 +52,16 @@ define_input_single_electrode <- function(inputId, label = 'Electrode'){
 
 
 define_input_frequency <- function(inputId, label = 'Frequency', is_range = TRUE, round = -1, initial_value = NULL){
+  
+  if(is_range){
+    v = c(1,200)
+  }else{
+    v = 1
+  }
+  
   quo = rlang::quo({
     define_input(
-      definition = sliderInput(!!inputId, !!label, min = 1, max = 200, value = c(1,200), round = !!round),
+      definition = sliderInput(!!inputId, !!label, min = 1, max = 200, value = !!v, round = !!round),
       init_args = c('min', 'max', 'value'),
       init_expr = {
         freq_range = range(preload_info$frequencies)
@@ -78,10 +85,16 @@ define_input_frequency <- function(inputId, label = 'Frequency', is_range = TRUE
 
 
 define_input_time <- function(inputId, label = 'Time Range', is_range = TRUE, round = -2, initial_value = NULL){
+  if(is_range){
+    v = c(0,1)
+  }else{
+    v = 0
+  }
+  
   quo = rlang::quo({
     
     define_input(
-      definition = sliderInput(!!inputId, !!label, min = 0, max = 1, value = c(0,1), step = 0.01, round = !!round),
+      definition = sliderInput(!!inputId, !!label, min = 0, max = 1, value = !!v, step = 0.01, round = !!round),
       init_args = c('min', 'max', 'value'),
       init_expr = {
         time_range = range(preload_info$time_points)
@@ -89,7 +102,6 @@ define_input_time <- function(inputId, label = 'Time Range', is_range = TRUE, ro
         min = min(time_range[1])
         max = max(time_range[2])
         initial_value = !!initial_value
-        
         
         if(!!is_range){
           initial_value %?<-% c(min, max)

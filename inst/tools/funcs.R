@@ -9,6 +9,9 @@ load_scripts <- function(..., asis = FALSE){
 
 define_initialization <- function(expr){
   expr = substitute(expr)
+  
+  mount_demo_subject()
+  
   eval(expr, envir = parent.frame())
 }
 
@@ -16,6 +19,8 @@ define_initialization <- function(expr){
 define_input <- function(definition, init_args, init_expr){
   definition = substitute(definition)
   init_expr = substitute(init_expr)
+  
+  mount_demo_subject()
   
   parser = rave:::comp_parser()
   
@@ -80,6 +85,8 @@ define_output <- function(definition, title, width, order){
   
   parser = rave:::comp_parser()
   definition = substitute(definition)
+  
+  mount_demo_subject()
   
   comp = parser$parse_quo(rlang::quo(!!definition))
   

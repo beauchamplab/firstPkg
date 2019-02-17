@@ -280,6 +280,9 @@ init_module <- function(module_id, debug = FALSE){
   
   if(!has_subject){
     cat2('Error: No subject found! Please load subject first', level = 'ERROR')
+    if(debug){
+      mount_demo_subject()
+    }
   }
   
   # Still try to run the rest
